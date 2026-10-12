@@ -1,0 +1,34 @@
+/* Static detail documents; entry styling is scoped to practice screens. */
+.practice-detail-entry{font-size:20px;font-weight:560;white-space:nowrap;padding:10px 0;color:inherit}
+.practice-detail-entry[hidden]{display:none}
+.practice-detail-entry:hover,.detail-back:hover{text-decoration:underline;text-underline-offset:.25em}
+.practice-detail-entry:focus-visible,.detail-back:focus-visible{outline:2px solid var(--blue);outline-offset:5px;border-radius:4px}
+.detail-document{min-height:100svh;overflow-x:hidden;color:#17223a}
+.detail-document.dark{color:#f2f5ff}
+.detail-document .site-header{position:static;margin:0 5.8%;height:120px;left:auto;right:auto}
+.detail-back{font-size:23px;font-weight:560;white-space:nowrap;padding:12px 0}
+.detail-content{margin:clamp(35px,8vh,100px) 7.5% 80px;max-width:1300px}
+.detail-content .eyebrow{color:#2255ed}
+.detail-content h1{font-size:clamp(38px,3.35vw,66px);font-weight:730;letter-spacing:-.052em;line-height:1.20;word-break:keep-all;margin:0}
+.detail-tool{display:block;font-size:clamp(22px,1.9vw,38px);color:#2255ed;font-weight:590;margin-bottom:22px;letter-spacing:-.035em}
+.detail-copy{max-width:1050px;margin-top:32px}
+.detail-copy p{font-size:clamp(23px,1.88vw,36px);line-height:1.66;font-weight:460;letter-spacing:-.028em;word-break:keep-all;color:#536079;margin:0}
+.detail-copy p+p{margin-top:.65em}
+.detail-document.dark .detail-tool,.detail-document.dark .eyebrow{color:#8eafff}
+.detail-document.dark .detail-copy p{color:#c0cbe0}
+@media(max-width:760px){
+ .has-practice-detail .site-header{height:116px;padding-top:18px;align-items:flex-start}
+ .has-practice-detail .brand{font-size:18px;gap:7px}
+ .has-practice-detail .brand-mark,.has-practice-detail .brand-mark svg{width:26px;height:26px}
+ .has-practice-detail .site-header .chapters{left:110px;top:88px;transform:translate(-50%,-50%) scale(.48)}
+ .has-practice-detail .volume{top:52px}
+ .has-practice-detail .practice-detail-entry{position:absolute;right:0;top:76px;font-size:17px;padding:8px 0}
+ .detail-document .site-header{margin:0 6%;height:auto;min-height:100px;gap:16px;flex-wrap:wrap;padding:22px 0}
+ .detail-document .brand{font-size:18px;gap:7px}
+ .detail-document .brand-mark,.detail-document .brand-mark img{width:26px;height:26px}
+ .detail-back{font-size:18px}
+ .detail-content{margin:32px 7% 60px}
+ .detail-content h1{font-size:clamp(29px,7.2vw,39px)}
+ .detail-tool{font-size:21px;margin-bottom:18px}
+ .detail-copy p{font-size:21px;line-height:1.6}
+}
