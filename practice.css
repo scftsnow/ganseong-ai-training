@@ -1,0 +1,52 @@
+/* Desktop projection. Screen copy stays separate from the dimensional choreography. */
+.practice .screen{perspective:1200px}
+.practice-copy{position:absolute;left:7.5%;top:27%;width:47%;color:#17223a}
+.practice-copy h1{margin:0;font-weight:730;letter-spacing:-.052em;line-height:1.20;word-break:keep-all;font-size:clamp(38px,3.35vw,66px)}
+.practice-tool{display:block;font-size:clamp(22px,1.9vw,38px);color:#2255ed;font-weight:590;margin-bottom:22px;letter-spacing:-.035em}
+.practice-task{display:block;max-width:100%}
+.practice-separator{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.practice-copy p{font-size:clamp(23px,1.88vw,36px);line-height:1.66;font-weight:460;letter-spacing:-.028em;word-break:keep-all;text-wrap:balance;max-width:94%;margin:32px 0 0;color:#536079}
+.practice-line{display:inline-block}
+.practice-copy [data-practice-word],.practice-line{transform-origin:0 100%;will-change:transform,opacity}
+.practice-divider{top:28%;width:49%}.practice-divider h1{font-size:clamp(76px,6.5vw,126px);line-height:1.12;letter-spacing:-.066em}
+.practice-divider h1 span{display:block}.practice-divider h1 span:first-child{color:#8eafff}
+.dark .practice-copy{color:#f2f5ff}.dark .practice-tool{color:#8eafff}.dark .practice-copy p{color:#c0cbe0}
+.reduced .practice-copy [data-practice-word],.reduced .practice-line{will-change:auto}
+/* Keep every destination reachable without crowding the school wordmark. */
+@media(min-width:761px){.chapters{position:relative;left:auto;transform:none;flex:1;justify-content:center;gap:3px;min-width:0}.chapters a{width:clamp(22px,1.75vw,35px);height:38px;font-size:clamp(13px,.94vw,18px);border-radius:9px;flex-shrink:0}.site-header{gap:18px}.preferences{gap:10px}.quiet-control span{display:none}.volume input{width:48px}}
+@media(min-width:761px) and (max-height:850px){.practice-copy{top:25%}.practice-copy p{margin-top:25px;line-height:1.55}.practice-tool{margin-bottom:17px}.practice-divider{top:27%}}
+
+.contents-practice{font-size:clamp(19px,1.48vw,29px);padding-left:18px;line-height:1.32}.contents-practice .contents-dot{width:4px;height:4px}
+/* Scene-specific desktop compositions: grid/right, connector/middle, deck/left, film/middle, program/right. */
+#practice-excel .practice-copy{left:7.5%;top:25%;width:43%}
+#practice-hwp .practice-copy,#practice-image-video .practice-copy{left:8%;top:14%;width:84%;text-align:center}
+#practice-hwp .practice-copy h1,#practice-image-video .practice-copy h1{font-size:clamp(34px,2.7vw,54px)}
+#practice-hwp .practice-tool,#practice-image-video .practice-tool{font-size:clamp(21px,1.65vw,32px);margin-bottom:10px}
+#practice-hwp .practice-copy p,#practice-image-video .practice-copy p{position:fixed;left:10%;top:73%;width:80%;max-width:80%;margin:0;font-size:clamp(22px,1.65vw,32px);line-height:1.55}
+#practice-canva .practice-copy{left:53%;top:23%;width:40%}
+#practice-canva .practice-copy h1{font-size:clamp(35px,3vw,59px)}
+#practice-canva .practice-copy p{font-size:clamp(22px,1.75vw,34px);max-width:100%}
+#practice-vibe-coding .practice-copy{left:7%;top:25%;width:41%}
+#practice-vibe-coding .practice-copy h1{font-size:clamp(35px,3vw,59px)}
+#practice-vibe-coding .practice-tool{font-size:clamp(21px,1.8vw,35px)}
+@media(min-width:761px) and (max-height:850px){#practice-hwp .practice-copy,#practice-image-video .practice-copy{top:15%}#practice-hwp .practice-copy p,#practice-image-video .practice-copy p{top:73%;font-size:23px}#practice-canva .practice-copy{top:21%}}
+.keep-token{white-space:nowrap}
+/* Later-chapter typography: preserve the divider and each graphic placement. */
+.practice-copy:not(.practice-divider) h1{font-size:clamp(47px,3.8vw,76px);line-height:1.18}
+.practice-copy:not(.practice-divider) .practice-tool{font-size:clamp(28px,2.2vw,44px);color:#62718b;font-weight:570;margin-bottom:18px}
+.practice-copy:not(.practice-divider) .practice-task{color:#2255ed}
+.practice-copy:not(.practice-divider) p{font-size:clamp(28px,2.08vw,42px);line-height:1.47;font-weight:490;text-wrap:pretty;margin-top:29px}
+.practice-copy [data-practice-phrase]{display:inline-block;white-space:pre-wrap;max-width:100%;transform-origin:0 90%;will-change:transform,opacity}
+.practice-emphasis{color:#2255ed;font-weight:650}
+.dark .practice-copy:not(.practice-divider) .practice-tool{color:#adbbd5}
+.dark .practice-copy:not(.practice-divider) .practice-task,.dark .practice-emphasis{color:#9ab7ff}
+.dark .practice-copy:not(.practice-divider) p{color:#d5dff1}
+#practice-hwp .practice-copy h1,#practice-image-video .practice-copy h1{font-size:clamp(43px,3.55vw,71px)}
+#practice-hwp .practice-copy p,#practice-image-video .practice-copy p{margin-top:0;font-size:clamp(28px,2.08vw,42px);line-height:1.42}
+#practice-hwp .practice-tool,#practice-image-video .practice-tool{margin-bottom:10px}
+#practice-canva .practice-copy{width:41%;left:52%}
+#practice-canva .practice-copy h1,#practice-vibe-coding .practice-copy h1{font-size:clamp(45px,3.45vw,69px)}
+#practice-canva .practice-copy p{font-size:clamp(28px,2.08vw,42px)}
+#practice-hwp .practice-tool,#practice-image-video .practice-tool,#practice-vibe-coding .practice-tool{font-size:clamp(28px,2.2vw,44px)}
+.reduced .practice-copy [data-practice-phrase]{will-change:auto}
+@media(min-width:761px) and (max-height:850px){.practice-copy:not(.practice-divider) p{margin-top:23px;line-height:1.4}#practice-hwp .practice-copy p,#practice-image-video .practice-copy p{margin-top:0}}
