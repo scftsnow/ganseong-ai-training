@@ -9,6 +9,7 @@ import {basicUseMarkup,renderBasicUseText} from './basic-use.mjs?v=20261010-chap
 import {createWorld} from './world.mjs?v=20261010-six-particle-style';
 import {createSound} from './sound.mjs';
 import {INSTALLATION_CUES} from './installation-title.mjs';
+import {detailHref,savePracticeReturn,takePracticeReturn} from './practice-detail-route.mjs?v=20261012-static-detail';
 history.scrollRestoration='manual';
 const $=s=>document.querySelector(s),pref=matchMedia('(prefers-reduced-motion: reduce)');
 const icon={
@@ -31,7 +32,7 @@ document.body.insertAdjacentHTML('afterbegin',`
 <div class="world" id="world" aria-hidden="true"></div>
 <header class="site-header"><a class="brand" href="#opening" aria-label="간성초등학교 AI 연수 타이틀"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36" fill="none"><path class="book-page" d="M18 29c-4-3-8-4-14-3V7c6-1 10 0 14 3 4-3 8-4 14-3v19c-6-1-10 0-14 3Z"/><path d="M18 10v19M8 12c3 0 5 .6 7 2M8 17c3 0 5 .6 7 2M22 14l2.5 2.5L29 12"/></svg></span>간성초등학교 AI 연수</a>
 <nav class="chapters" aria-label="프레젠테이션 화면">${PAGES.map((p,i)=>`<a href="#${p.id}" data-go="${i}" aria-label="${i+1}. ${p.title}">${String(i+1).padStart(2,'0')}</a>`).join('')}</nav>
-<div class="preferences"><button id="audio-toggle" class="quiet-control" aria-pressed="false" aria-label="소리 켜기">${svg('mute')}<span>소리 켜기</span></button><label class="volume"><span class="sr-only">음량</span><input type="range" id="volume" aria-label="음량" min="0" max="100" value="35"></label><button id="motion-toggle" class="quiet-control" aria-pressed="false" aria-label="움직임 줄이기">${svg('motion')}</button></div></header>
+<div class="preferences"><a id="practice-detail-link" class="practice-detail-entry" href="./practice-title-details.html" hidden>상세 과정 ↗</a><button id="audio-toggle" class="quiet-control" aria-pressed="false" aria-label="소리 켜기">${svg('mute')}<span>소리 켜기</span></button><label class="volume"><span class="sr-only">음량</span><input type="range" id="volume" aria-label="음량" min="0" max="100" value="35"></label><button id="motion-toggle" class="quiet-control" aria-pressed="false" aria-label="움직임 줄이기">${svg('motion')}</button></div></header>
 <main id="chapters">${PAGES.map((p,i)=>`<section class="presentation-page ${p.kind==='usage-title'?'usage-title':p.kind==='usage-tip'?'usage-tip':p.kind==='closing'?'closing':p.kind==='practice'?'practice':p.kind==='mindset'?`chapter chapter-${p.mindsetIndex+1}`:p.kind==='basic-use'?`basic-use basic-use-${p.basicIndex}`:`prelude prelude-${p.kind}`}" id="${p.id}" aria-label="${p.title}" data-page="${i}" tabindex="-1"><div class="screen">${p.kind==='usage-title'?usageTitleMarkup(p):p.kind==='usage-tip'?usageTipMarkup(p):p.kind==='closing'?closingMarkup(p):p.kind==='practice'?practiceMarkup(p):p.kind==='mindset'?contentMarkup(p):p.kind==='basic-use'?basicUseMarkup(p):preludeMarkup(p)}</div></section>`).join('')}</main>
 <footer class="transport"><div class="transport-left"><button class="icon-button" id="play-toggle" aria-label="일시 정지">${svg('pause')}</button><button class="icon-button" id="replay" aria-label="현재 장면 다시 보기">${svg('replay')}</button><input type="range" id="story-position" aria-label="현재 장면 진행" min="0" max="10" step=".01" value="0"><button class="read-button" id="show-reading">완료 화면</button></div><button class="next-section" id="next-section">목차로 ${svg('arrow')}</button><span class="scroll-cue" aria-hidden="true">스크롤 ↓</span></footer><div class="sr-only" role="status" id="announcement"></div>
 `);
@@ -127,6 +128,9 @@ function update(){
  const y=scrollY;pageIndex=LAST_PAGE;
  for(let i=0;i<LAST_PAGE;i++)if(y<metrics[i+1].top-.75){pageIndex=i;break;}
  const page=PAGES[pageIndex],local=y-metrics[pageIndex].top;
+ $('#practice-detail-link').hidden=page.kind!=='practice';
+ document.body.classList.toggle('has-practice-detail',page.kind==='practice');
+ if(page.kind==='practice')$('#practice-detail-link').href=detailHref(page.id);
  story=reduced?page.duration:page.start+clamp(local/(viewHeight*.85))*(page.duration-page.start);
  if(playing&&localClock.page===pageIndex)story=localClock.t;
  if(page.duration-story<.005)story=page.duration;
@@ -159,6 +163,7 @@ $('.brand').addEventListener('click',e=>{e.preventDefault();go(0);});
 $('.skip-link').addEventListener('click',e=>{e.preventDefault();const i=Math.max(3,pageIndex);go(i,true,true);(nodes[i].reading??nodes[i].section).focus({preventScroll:true});});
 document.querySelectorAll('[data-replay]').forEach(button=>button.addEventListener('click',()=>replay(+button.dataset.replay)));
 $('#play-toggle').addEventListener('click',()=>playing||navigation?pause():play());
+$('#practice-detail-link').addEventListener('click',()=>savePracticeReturn(PAGES[pageIndex].id,story,playing));
 $('#replay').addEventListener('click',()=>replay());
 $('#show-reading').addEventListener('click',()=>go(pageIndex,true));
 $('#next-section').addEventListener('click',()=>pageIndex===LAST_PAGE?returnToOpening():go(pageIndex+1));
@@ -190,11 +195,12 @@ try{world=createWorld($('#world'));}catch(error){
  world={renderPage(){},resize(){},renderer:'fallback',particles:{base:0,trails:0}};
  console.warn('WebGL unavailable; the presentation text remains readable.',error.message);
 }
-const initial=Math.max(0,PAGES.findIndex(p=>'#'+p.id===location.hash)),initialTime=reduced?PAGES[initial].duration:PAGES[initial].start;
+const initial=Math.max(0,PAGES.findIndex(p=>'#'+p.id===location.hash)),detailReturn=takePracticeReturn(PAGES[initial].id),initialTime=reduced?PAGES[initial].duration:(detailReturn?.time??PAGES[initial].start);
 scrollTo({top:positionFor(initial,initialTime),behavior:'instant'});
 localClock={page:initial,t:initialTime};
-if(!reduced)beginClock(initial,initialTime);
+if(!reduced&&(!detailReturn||detailReturn.playing))beginClock(initial,initialTime);else playing=false;
 update();addEventListener('scroll',update,{passive:true});
+addEventListener('pageshow',event=>{if(event.persisted)takePracticeReturn(PAGES[pageIndex].id);});
 function tick(now){
  requestAnimationFrame(tick);
  if(window.__practiceCapture?.frozen){last=now;return;}
