@@ -1,0 +1,9 @@
+// Exact copy approved in Sentinel_92511689c0548191a2eae2ac19a1d79b.
+// Groups and cue names are implementation metadata; no slash is rendered.
+export const BASIC_USE = [
+ {id:'chatbot-to-agent',groups:['대답하는 챗봇에서','내 일을 도와주는 에이전트로'],times:[[.35,.72],[2.45,2.73,3.03,3.46]],duration:7.4,color:[245,244,239],beats:[{t:1.45,kind:'air',name:'dialogue-unfolds'},{t:2.55,kind:'spark',name:'work-begins'},{t:4.85,kind:'bloom',name:'agent-workspace'}]},
+ {id:'web-to-app',groups:['Web이 아닌 App으로 사용하세요','내 컴퓨터에서 함께 일하는 AI'],times:[[.25,.50,.90,1.32],[3.50,3.76,4.08,4.36,4.72]],duration:7.4,color:[228,235,249],beats:[{t:1.85,kind:'air',name:'window-becomes-object'},{t:3.0,kind:'spark',name:'desktop-unfolds'},{t:5.1,kind:'bloom',name:'app-at-home'}]},
+ {id:'opencode',groups:['사용량이 부족하다면?','OpenCode','이것만 직접 설치해봅시다'],times:[[.4,.8],[2.3],[5.35,5.66,6.1]],duration:8.6,color:[11,18,35],dark:true,beats:[{t:1.45,kind:'air',name:'capacity-opens'},{t:2.32,kind:'bloom',name:'new-package'},{t:4.7,kind:'soft',name:'desktop-receives-package'}]},
+ {id:'ai-apps',groups:['ChatGPT도, Gemini도 앱으로','이제부터는, 모든 걸 AI에게 맡기세요'],times:[[.5,1.0,1.65],[3.8,4.08,4.4,4.68,5.05]],duration:8.2,color:[244,247,252],beats:[{t:1.25,kind:'soft',name:'second-app'},{t:2.65,kind:'air',name:'shared-workspace'},{t:4.8,kind:'bloom',name:'work-orchestrates'}]},
+ {id:'phone-connection',groups:['어디서든, 핸드폰으로','내 컴퓨터의 AI와 연결하기'],times:[[.4,1.0],[3.0,3.36,3.7,4.2]],duration:8,color:[13,23,44],dark:true,beats:[{t:1.9,kind:'air',name:'devices-face-each-other'},{t:3.1,kind:'spark',name:'connection-path'},{t:4.75,kind:'bloom',name:'bidirectional-flow'}]}
+].map((page,i)=>({...page,kind:'basic-use',basicIndex:i,start:0,title:page.groups.join(' '),cues:[...page.beats,...page.times.flatMap((times,g)=>times.map((t,n)=>({t,kind:'word',name:`basic-word-${g}-${n}`})))].sort((a,b)=>a.t-b.t)}));

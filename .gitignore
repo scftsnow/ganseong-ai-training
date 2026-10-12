@@ -1,0 +1,6 @@
+.private/
+.openai/
+.env
+.env.*
+*.log
+__pycache__/
