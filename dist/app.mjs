@@ -37,7 +37,7 @@ document.body.insertAdjacentHTML('afterbegin',`
 <footer class="transport"><div class="transport-left"><button class="icon-button" id="play-toggle" aria-label="일시 정지">${svg('pause')}</button><button class="icon-button" id="replay" aria-label="현재 장면 다시 보기">${svg('replay')}</button><input type="range" id="story-position" aria-label="현재 장면 진행" min="0" max="10" step=".01" value="0"><button class="read-button" id="show-reading">완료 화면</button></div><button class="next-section" id="next-section">목차로 ${svg('arrow')}</button><span class="scroll-cue" aria-hidden="true">스크롤 ↓</span></footer><div class="sr-only" role="status" id="announcement"></div>
 `);
 const sections=[...document.querySelectorAll('[data-page]')],sound=createSound();
-const nodes=sections.map((section,i)=>({section,screen:section.querySelector('.screen'),kinetic:section.querySelector('.kinetic'),words:[...section.querySelectorAll('.word')],reading:section.querySelector('.reading'),page:PAGES[i]}));
+const nodes=sections.map((section,i)=>({section,screen:section.querySelector('.screen'),kinetic:section.querySelector('.kinetic'),words:[...section.querySelectorAll('.word')],reading:section.querySelector('.reading'),detailHost:section.querySelector('.practice-copy p'),page:PAGES[i]}));
 let reduced=pref.matches;
 try{reduced=reduced||localStorage.getItem('ai-lessons-reduce-motion')==='1';}catch{}
 // Page, local playback clock and deliberate navigation are independent states.
@@ -128,12 +128,19 @@ function update(){
  const y=scrollY;pageIndex=LAST_PAGE;
  for(let i=0;i<LAST_PAGE;i++)if(y<metrics[i+1].top-.75){pageIndex=i;break;}
  const page=PAGES[pageIndex],local=y-metrics[pageIndex].top;
- $('#practice-detail-link').hidden=page.kind!=='practice';
+ const detailLink=$('#practice-detail-link');
+ const inlineDetail=page.kind==='practice'&&page.practiceIndex>=1;
+ const detailHost=inlineDetail?nodes[pageIndex].detailHost:$('.preferences');
+ if(detailLink.parentElement!==detailHost){
+  if(inlineDetail)detailHost.append(detailLink);
+  else detailHost.prepend(detailLink);
+ }
  document.body.classList.toggle('has-practice-detail',page.kind==='practice');
- if(page.kind==='practice')$('#practice-detail-link').href=detailHref(page.id);
+ if(page.kind==='practice')detailLink.href=detailHref(page.id);
  story=reduced?page.duration:page.start+clamp(local/(viewHeight*.85))*(page.duration-page.start);
  if(playing&&localClock.page===pageIndex)story=localClock.t;
  if(page.duration-story<.005)story=page.duration;
+ detailLink.hidden=page.kind!=='practice'||story<page.duration;
  if(story===page.duration&&(previousStory!==page.duration||previousIndex!==pageIndex))ambient=page.duration;
  transfer=pageIndex===LAST_PAGE?0:smooth(metrics[pageIndex].height-viewHeight,metrics[pageIndex].height,local);
  const next=PAGES[Math.min(LAST_PAGE,pageIndex+1)],bg=page.color.map((c,j)=>Math.round(mix(c,next.color[j],transfer)));
