@@ -4,12 +4,14 @@ import {BASIC_USE} from './basic-use-data.mjs';
 
 const out=(a,b,t)=>1-Math.pow(1-clamp((t-a)/(b-a)),4);
 export function basicUseMarkup(page){
- return `<div class="basic-copy"><div class="eyebrow basic-chapter-name">AI를 '컴퓨터에 설치'하기</div><h1 class="basic-message" aria-label="${page.title}">${page.groups.map((text,g)=>`<span class="basic-group" data-group="${g}">${text.split(' ').map((word,n)=>`${n?' ':''}<span class="basic-word" data-basic-word="${g}-${n}">${word}</span>`).join('')}</span>`).join(' ')}</h1></div>`;
+ return `<div class="basic-copy"><div class="eyebrow basic-chapter-name">AI를 '컴퓨터에 설치'하기</div><h1 class="basic-message" aria-label="${page.title}">${page.groups.map((text,g)=>`<span class="basic-group" data-group="${g}">${text.split(' ').map((word,n)=>`${n?' ':''}<span class="basic-word" data-basic-word="${g}-${n}">${word}</span>`).join('')}</span>`).join(' ')}</h1>${page.id==='opencode'?'<a class="opencode-download" href="https://opencode.ai/download" target="_blank" rel="noopener noreferrer" aria-label="OpenCode 공식 다운로드 페이지 열기" hidden>OpenCode 다운로드 ↗</a>':''}</div>`;
 }
 export function renderBasicUseText(screen,page,t,reduced){
  const time=reduced?page.duration:t;
  const label=screen.querySelector('.basic-chapter-name'),enter=reduced?1:out(.08,.5,time);
  label.style.opacity=enter;label.style.transform=`translate3d(0,${(1-enter)*12}px,0)`;
+ const download=screen.querySelector('.opencode-download');
+ if(download){download.hidden=time<page.duration;download.inert=time<page.duration;}
  screen.querySelectorAll('[data-group]').forEach((group,g)=>{
   group.querySelectorAll('.basic-word').forEach((word,n)=>{
    const p=smooth(page.times[g][n],page.times[g][n]+.29,time);

@@ -15,6 +15,10 @@
 .basic-use-2 .basic-group:first-child{font-size:clamp(30px,2.9vw,56px);margin-bottom:24px;color:#a7b8d7}
 .basic-use-2 .basic-group:nth-child(2){font-weight:740;letter-spacing:-.075em;color:#91b0ff}
 .basic-use-2 .basic-group:last-child{font-size:clamp(32px,3vw,58px);line-height:1.2;font-weight:570;margin-top:28px;letter-spacing:-.055em;color:#f2f5ff}
+#opencode .opencode-download{display:flex;width:max-content;align-items:center;justify-content:center;margin:28px auto 0;padding:13px 24px;border:1px solid #718dd0;border-radius:12px;background:rgba(145,176,255,.12);color:#bed0ff;font-size:24px;line-height:1.2;font-weight:600;letter-spacing:-.015em;text-decoration:none;pointer-events:auto}
+#opencode .opencode-download[hidden]{display:none}
+#opencode .opencode-download:hover{background:rgba(145,176,255,.22)}
+#opencode .opencode-download:focus-visible{outline:3px solid #bed0ff;outline-offset:5px}
 .basic-use-3 .basic-copy{left:7.5%;top:17%;width:85%;font-size:clamp(48px,4.25vw,83px)}
 .basic-use-3 .basic-group:first-child{font-size:.71em;margin-bottom:23px}
 .basic-use-4 .basic-copy{left:7.5%;top:17%;width:85%;text-align:center;font-size:clamp(52px,4.55vw,89px)}
